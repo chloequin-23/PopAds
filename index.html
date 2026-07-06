@@ -1,111 +1,9 @@
-<!DOCTYPE html>
-<html lang="es">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Quiz de Práctica Educativa</title>
-
-    <!-- El Favicon apuntando a la carpeta de imágenes -->
-    <link rel="icon" type="image/png" href="imagen/python_2.webp">
-
-    <!-- Etiquetas Open Graph para WhatsApp actualizadas -->
-    <meta property="og:title" content="¡Trivia Digital Activa! 🚀">
-    <meta property="og:description" content="Participa en nuestra encuesta técnica de prueba y analiza la interfaz en tiempo real.">
-    <meta property="og:image" content="https://premioscashea.vercel.app/imagen/Pythonimagen_2.webp">
-    <meta property="og:url" content="https://premioscashea.vercel.app">
-    <meta property="og:type" content="website">
-
-    <!-- Enlace a los estilos CSS -->
-    <link rel="stylesheet" href="style.css">
-</head>
-<body>
-
-    <header class="main-header">
-        <!-- Reemplazo del encabezado por tu nuevo archivo cintillo.webp -->
-        <img src="imagen/cintillo.webp" alt="Cintillo de Desarrollo" class="cintillo-top-img">
-    </header>
-
-    <main class="container">
-        
-        <!-- Contenedor Dinámico de Pasos -->
-        <div class="quiz-card">
-            
-            <!-- PASO 1: Pregunta 1 -->
-            <div id="step-1" class="quiz-step active">
-                <h3>Pregunta 1 de 3</h3>
-                <h2>¿Cuál es tu lenguaje de programación favorito?</h2>
-                <div class="options-container">
-                    <button class="quiz-btn" onclick="nextStep(2)">JavaScript</button>
-                    <button class="quiz-btn" onclick="nextStep(2)">Python</button>
-                    <button class="quiz-btn" onclick="nextStep(2)">Otro / Ninguno</button>
-                </div>
-            </div>
-
-            <!-- PASO 2: Pregunta 2 -->
-            <div id="step-2" class="quiz-step">
-                <h3>Pregunta 2 de 3</h3>
-                <h2>¿Desde qué dispositivo programas habitualmente?</h2>
-                <div class="options-container">
-                    <button class="quiz-btn" onclick="nextStep(3)">Dispositivo Móvil</button>
-                    <button class="quiz-btn" onclick="nextStep(3)">Computadora</button>
-                </div>
-            </div>
-
-            <!-- PASO 3: Pregunta 3 -->
-            <div id="step-3" class="quiz-step">
-                <h3>Pregunta 3 de 3</h3>
-                <h2>¿Qué tipo de monetización te interesa aprender?</h2>
-                <div class="options-container">
-                    <button class="quiz-btn" onclick="startLoading()">Publicidad Web (Banners/Pop)</button>
-                    <button class="quiz-btn" onclick="startLoading()">Aplicaciones Móviles</button>
-                </div>
-            </div>
-
-            <!-- PASO 4: Pantalla de Carga -->
-            <div id="step-loading" class="quiz-step text-center">
-                <div class="spinner"></div>
-                <h2>Procesando respuestas...</h2>
-                <p>Comprobando disponibilidad de servidores en tiempo real.</p>
-            </div>
-
-            <!-- PASO 5: Sección Final -->
-            <div id="step-final" class="quiz-step text-center">
-                <img src="imagen/python_2.webp" alt="Logo de Python" class="quiz-logo-img">
-                <h2 class="success-title">¡Respuestas Verificadas!</h2>
-                <p>Para desbloquear el acceso al panel educativo, interactúa con el botón inferior:</p>
-                
-                <button class="action-btn share-btn" onclick="incrementBar()">COMPARTIR PROGRESO</button>
-                
-                <div class="progress-container">
-                    <div id="progress-bar" class="progress-bar"></div>
-                </div>
-
-                <p class="instruction-text">Una vez la barra llegue al 100%, pulsa el botón final:</p>
-                <button id="final-action-btn" class="action-btn final-btn" disabled onclick="executeRedirect()">VER PANEL DE CONTROL</button>
-            </div>
-
-        </div>
-
-        <!-- SECCIÓN DE COMENTARIOS CON CAJA DE ENVÍO LOCAL -->
         <section class="comments-section">
             <h3>Comentarios de la Comunidad (5)</h3>
             <hr>
-
-            <!-- Caja de Entrada Interactiva -->
-            <div class="add-comment-box">
-                <div class="avatar-container">
-                    <img src="imagen/perfil/perfil1.webp" alt="Tu Perfil" class="comment-avatar-img">
-                </div>
-                <div class="comment-input-container">
-                    <input type="text" id="user-comment-input" placeholder="Escribe un comentario público..." autocomplete="off">
-                    <button id="submit-comment-btn" onclick="postLocalComment()">Publicar</button>
-                </div>
-            </div>
             
-            <!-- Contenedor donde se insertan las publicaciones locales -->
             <div id="dynamic-comments-container"></div>
             
-            <!-- Perfil 1 -->
             <div class="comment">
                 <div class="avatar-container">
                     <img src="imagen/perfil/perfil1.webp" alt="Usuario 1" class="comment-avatar-img">
@@ -117,7 +15,6 @@
                 </div>
             </div>
 
-            <!-- Perfil 2 -->
             <div class="comment">
                 <div class="avatar-container">
                     <img src="imagen/perfil/perfil2.webp" alt="Usuario 2" class="comment-avatar-img">
@@ -129,7 +26,6 @@
                 </div>
             </div>
 
-            <!-- Perfil 3 (CORREGIDO: Nombre y Apellido real) -->
             <div class="comment">
                 <div class="avatar-container">
                     <img src="imagen/perfil/perfil3.webp" alt="Usuario 3" class="comment-avatar-img">
@@ -141,7 +37,6 @@
                 </div>
             </div>
 
-            <!-- Perfil 4 -->
             <div class="comment">
                 <div class="avatar-container">
                     <img src="imagen/perfil/perfil4.webp" alt="Usuario 4" class="comment-avatar-img">
@@ -153,7 +48,6 @@
                 </div>
             </div>
 
-            <!-- Perfil 5 -->
             <div class="comment">
                 <div class="avatar-container">
                     <img src="imagen/perfil/perfil5.webp" alt="Usuario 5" class="comment-avatar-img">
@@ -165,10 +59,14 @@
                 </div>
             </div>
 
+            <div class="add-comment-box">
+                <div class="avatar-container">
+                    <div class="avatar-generico"></div>
+                </div>
+                <div class="comment-input-container">
+                    <input type="text" id="user-comment-input" placeholder="Escribe un comentario público..." autocomplete="off">
+                    <button id="submit-comment-btn" onclick="postLocalComment()">Publicar</button>
+                </div>
+            </div>
+
         </section>
-
-    </main>
-
-    <script src="js/app.js"></script>
-</body>
-</html>
