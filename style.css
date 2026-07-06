@@ -1,4 +1,6 @@
-/* Estilos Globales Reseteados */
+/* ==========================================================================
+   1. ESTILOS GLOBALES Y RESETEO
+   ========================================================================== */
 * {
     box-sizing: border-box;
     margin: 0;
@@ -12,27 +14,27 @@ body {
     padding-bottom: 40px;
 }
 
-/* Header Adaptado */
+/* ==========================================================================
+   2. CABECERA (CINTILLO SUPERIOR)
+   ========================================================================== */
 .main-header {
-    background-color: #1a1a1a;
-    color: #ffffff;
-    text-align: center;
-    padding: 20px 10px;
-    border-bottom: 4px solid #fdf93d;
+    background-color: #ffffff;
+    border-bottom: 4px solid #fdf93d; /* Línea de acento amarilla base */
+    padding: 0;
+    width: 100%;
 }
 
-.main-header h1 {
-    font-size: 1.4rem;
-    letter-spacing: 1px;
+.cintillo-top-img {
+    width: 100%;
+    max-width: 500px;
+    height: auto;
+    display: block;
+    margin: 0 auto;
 }
 
-.main-header p {
-    font-size: 0.85rem;
-    color: #ccc;
-    margin-top: 4px;
-}
-
-/* Contenedores */
+/* ==========================================================================
+   3. CONTENEDORES PRINCIPALES
+   ========================================================================== */
 .container {
     max-width: 500px;
     margin: 20px auto;
@@ -47,7 +49,9 @@ body {
     margin-bottom: 20px;
 }
 
-/* Lógica de Pasos */
+/* ==========================================================================
+   4. LÓGICA DE PASOS DINÁMICOS (QUIZ)
+   ========================================================================== */
 .quiz-step {
     display: none;
 }
@@ -70,7 +74,9 @@ body {
     color: #111;
 }
 
-/* Botones de Opciones con Amarillo Base */
+/* ==========================================================================
+   5. BOTONES DE OPCIONES DEL TRIVIA
+   ========================================================================== */
 .options-container {
     display: flex;
     flex-direction: column;
@@ -94,7 +100,7 @@ body {
     background-color: #e1db26;
 }
 
-/* Control Dinámico del Logo Central */
+/* Control del Logo Central en la Sección Final */
 .quiz-logo-img {
     width: 100%;
     max-width: 250px;
@@ -103,8 +109,12 @@ body {
     margin: 0 auto 15px auto;
 }
 
-/* Pantalla de Carga y Animaciones */
-.text-center { text-align: center; }
+/* ==========================================================================
+   6. PANTALLA DE CARGA Y ANIMACIONES
+   ========================================================================== */
+.text-center { 
+    text-align: center; 
+}
 
 .spinner {
     width: 40px;
@@ -121,7 +131,14 @@ body {
     100% { transform: rotate(360deg); }
 }
 
-/* Barra de Progreso */
+@keyframes fadeIn {
+    from { opacity: 0; transform: translateY(-8px); }
+    to { opacity: 1; transform: translateY(0); }
+}
+
+/* ==========================================================================
+   7. BARRA DE PROGRESO Y BOTONES DE ACCIÓN
+   ========================================================================== */
 .progress-container {
     background-color: #e0e0e0;
     border-radius: 10px;
@@ -138,7 +155,6 @@ body {
     transition: width 0.3s ease;
 }
 
-/* Botones de Acción */
 .action-btn {
     width: 100%;
     padding: 15px;
@@ -168,7 +184,9 @@ body {
     cursor: pointer;
 }
 
-/* --- SECCIÓN DE COMENTARIOS Y AVATARES MODULARES --- */
+/* ==========================================================================
+   8. SECCIÓN DE COMENTARIOS Y CAJA DE ENVÍO LOCAL
+   ========================================================================== */
 .comments-section {
     background: #fff;
     border-radius: 8px;
@@ -182,6 +200,54 @@ body {
     margin-bottom: 8px;
 }
 
+/* Caja de entrada interactiva para el usuario */
+.add-comment-box {
+    display: flex;
+    gap: 10px;
+    margin-bottom: 20px;
+    align-items: center;
+    background-color: #f9f9f9;
+    padding: 10px;
+    border-radius: 8px;
+    border: 1px solid #e0e0e0;
+}
+
+.comment-input-container {
+    display: flex;
+    flex-grow: 1;
+    gap: 8px;
+}
+
+.comment-input-container input {
+    flex-grow: 1;
+    padding: 10px 14px;
+    border: 1px solid #ccc;
+    border-radius: 20px;
+    font-size: 0.9rem;
+    outline: none;
+    transition: border-color 0.2s;
+}
+
+.comment-input-container input:focus {
+    border-color: #2980b9;
+}
+
+.comment-input-container button {
+    background-color: #2980b9;
+    color: white;
+    border: none;
+    padding: 0 16px;
+    border-radius: 20px;
+    font-weight: bold;
+    font-size: 0.85rem;
+    cursor: pointer;
+}
+
+.comment-input-container button:active {
+    background-color: #1f618d;
+}
+
+/* Estructura modular de la lista de comentarios */
 .comment {
     display: flex;
     gap: 12px;
