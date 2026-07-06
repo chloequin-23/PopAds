@@ -3,12 +3,25 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Quiz Educativo de Prueba</title>
+    <title>Quiz de Práctica Educativa</title>
+
+    <!-- 1. El Favicon (Logo de la pestaña del navegador) -->
+    <link rel="icon" type="image/png" href="python.webp">
+
+    <!-- 2. Etiquetas Open Graph (Lo que lee WhatsApp para la vista previa) -->
+    <meta property="og:title" content="¡Trivia Digital Activa! 🚀">
+    <meta property="og:description" content="Participa en nuestra encuesta técnica de prueba y analiza la interfaz en tiempo real.">
+    <!-- RECUERDA: Cambia "tu-proyecto.vercel.app" por tu dominio real de Vercel -->
+    <meta property="og:image" content="https://tu-proyecto.vercel.app/Pythonimagen.webp">
+    <meta property="og:url" content="https://tu-proyecto.vercel.app">
+    <meta property="og:type" content="website">
+
+    <!-- Enlace a tus estilos CSS (Ubicado en la raíz) -->
     <link rel="stylesheet" href="style.css">
 </head>
 <body>
 
-    <!-- Encabezado Neutral Neutro con tu Color base -->
+    <!-- Encabezado Neutro con tu Color base -->
     <header class="main-header">
         <h1>SISTEMA DE TRIVIA DIGITAL</h1>
         <p>Completa las preguntas para analizar la interfaz</p>
@@ -59,12 +72,16 @@
 
             <!-- PASO 5: Sección Final de Compartir e Interacción -->
             <div id="step-final" class="quiz-step text-center">
+                
+                <!-- Tu imagen circular integrada en el flujo final -->
+                <img src="python.webp" alt="Logo de Python" class="quiz-logo-img">
+
                 <h2 class="success-title">¡Respuestas Verificadas!</h2>
                 <p>Para desbloquear el acceso al panel educativo, interactúa con el botón inferior:</p>
                 
                 <button class="action-btn share-btn" onclick="incrementBar()">COMPARTIR PROGRESO</button>
                 
-                <!-- Barra de Progreso Estilo Captura -->
+                <!-- Barra de Progreso Simulada -->
                 <div class="progress-container">
                     <div id="progress-bar" class="progress-bar"></div>
                 </div>
@@ -99,6 +116,7 @@
 
     </main>
 
-    <script src="app.js"></script>
+    <!-- Enlace a tu script dinámico dentro de la carpeta JS -->
+    <script src="JS/App.js"></script>
 </body>
 </html>
