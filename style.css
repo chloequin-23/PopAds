@@ -18,7 +18,7 @@ body {
     color: #ffffff;
     text-align: center;
     padding: 20px 10px;
-    border-bottom: 4px solid #fdf93d; /* Línea de contraste */
+    border-bottom: 4px solid #fdf93d; /* Tu color base como acento */
 }
 
 .main-header h1 {
@@ -47,7 +47,7 @@ body {
     margin-bottom: 20px;
 }
 
-/* Lógica de Control de Pasos Abiertos/Ocultos */
+/* Lógica de Control de Ocultar/Mostrar Pasos */
 .quiz-step {
     display: none;
 }
@@ -71,7 +71,7 @@ body {
     color: #111;
 }
 
-/* Botones de Opciones con TU COLOR base #fdf93d */
+/* Botones de Respuestas con TU COLOR #fdf93d */
 .options-container {
     display: flex;
     flex-direction: column;
@@ -93,6 +93,16 @@ body {
 .quiz-btn:active {
     transform: scale(0.98);
     background-color: #e1db26;
+}
+
+/* Control del logo dentro del flujo final (python.webp) */
+.quiz-logo-img {
+    width: 100%;
+    max-width: 280px;
+    height: auto;
+    display: block;
+    margin: 0 auto 15px auto;
+    border-radius: 8px;
 }
 
 /* Pantalla de Carga y Animación */
@@ -124,13 +134,13 @@ body {
 }
 
 .progress-bar {
-    background-color: #2980b9; /* Color azul de progreso fluido */
+    background-color: #2980b9; /* Progreso fluido azul */
     height: 100%;
-    width: 0%; /* Crece dinámicamente con JS */
+    width: 0%;
     transition: width 0.3s ease;
 }
 
-/* Botones de Acción de Bloque Final */
+/* Botones de Acción Final */
 .action-btn {
     width: 100%;
     padding: 15px;
