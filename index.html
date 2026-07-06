@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Quiz Educativo de Prueba</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+    <!-- Encabezado Neutral Neutro con tu Color base -->
+    <header class="main-header">
+        <h1>SISTEMA DE TRIVIA DIGITAL</h1>
+        <p>Completa las preguntas para analizar la interfaz</p>
+    </header>
+
+    <main class="container">
+        
+        <!-- Contenedor Dinámico de Pasos -->
+        <div class="quiz-card">
+            
+            <!-- PASO 1: Pregunta 1 -->
+            <div id="step-1" class="quiz-step active">
+                <h3>Pregunta 1 de 3</h3>
+                <h2>¿Cuál es tu lenguaje de programación favorito?</h2>
+                <div class="options-container">
+                    <button class="quiz-btn" onclick="nextStep(2)">JavaScript</button>
+                    <button class="quiz-btn" onclick="nextStep(2)">Python</button>
+                    <button class="quiz-btn" onclick="nextStep(2)">Otro / Ninguno</button>
+                </div>
+            </div>
+
+            <!-- PASO 2: Pregunta 2 -->
+            <div id="step-2" class="quiz-step">
+                <h3>Pregunta 2 de 3</h3>
+                <h2>¿Desde qué dispositivo programas habitualmente?</h2>
+                <div class="options-container">
+                    <button class="quiz-btn" onclick="nextStep(3)">Dispositivo Móvil</button>
+                    <button class="quiz-btn" onclick="nextStep(3)">Computadora</button>
+                </div>
+            </div>
+
+            <!-- PASO 3: Pregunta 3 -->
+            <div id="step-3" class="quiz-step">
+                <h3>Pregunta 3 de 3</h3>
+                <h2>¿Qué tipo de monetización te interesa aprender?</h2>
+                <div class="options-container">
+                    <button class="quiz-btn" onclick="startLoading()">Publicidad Web (Banners/Pop)</button>
+                    <button class="quiz-btn" onclick="startLoading()">Aplicaciones Móviles</button>
+                </div>
+            </div>
+
+            <!-- PASO 4: Pantalla de Carga (Simulada) -->
+            <div id="step-loading" class="quiz-step text-center">
+                <div class="spinner"></div>
+                <h2>Procesando respuestas...</h2>
+                <p>Comprobando disponibilidad de servidores en tiempo real.</p>
+            </div>
+
+            <!-- PASO 5: Sección Final de Compartir e Interacción -->
+            <div id="step-final" class="quiz-step text-center">
+                <h2 class="success-title">¡Respuestas Verificadas!</h2>
+                <p>Para desbloquear el acceso al panel educativo, interactúa con el botón inferior:</p>
+                
+                <button class="action-btn share-btn" onclick="incrementBar()">COMPARTIR PROGRESO</button>
+                
+                <!-- Barra de Progreso Estilo Captura -->
+                <div class="progress-container">
+                    <div id="progress-bar" class="progress-bar"></div>
+                </div>
+
+                <p class="instruction-text">Una vez la barra llegue al 100%, pulsa el botón final:</p>
+                <button id="final-action-btn" class="action-btn final-btn" disabled onclick="executeRedirect()">VER PANEL DE CONTROL</button>
+            </div>
+
+        </div>
+
+        <!-- SECCIÓN DE COMENTARIOS SIMULADOS (Estilo Red Social) -->
+        <section class="comments-section">
+            <h3>Comentarios de la Comunidad (3)</h3>
+            <hr>
+            <div class="comment">
+                <div class="avatar">🤖</div>
+                <div class="comment-body">
+                    <h4>Carlos Mendoza</h4>
+                    <p>Excelente código de práctica. Me funcionó el flujo completo desde el teléfono sin caídas.</p>
+                    <small>Hace 2 min · Me gusta</small>
+                </div>
+            </div>
+            <div class="comment">
+                <div class="avatar">👨‍💻</div>
+                <div class="comment-body">
+                    <h4>Andrea Silva</h4>
+                    <p>Me gusta el cambio de color al amarillo #fdf93d, se ve mucho más limpio que la original.</p>
+                    <small>Hace 5 min · Me gusta</small>
+                </div>
+            </div>
+        </section>
+
+    </main>
+
+    <script src="app.js"></script>
+</body>
+</html>
