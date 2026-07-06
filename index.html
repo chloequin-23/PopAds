@@ -1,3 +1,73 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Trivia Educativa</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+    <header class="main-header">
+        <img src="imagen/cintillo.webp" alt="Cintillo de Desarrollo" class="cintillo-top-img">
+    </header>
+
+    <div class="container">
+        
+        <main class="quiz-card">
+            
+            <div id="step-1" class="quiz-step active">
+                <h3>Pregunta 1 de 3</h3>
+                <h2>¿Cuál es tu lenguaje de programación favorito?</h2>
+                <div class="options-container">
+                    <button class="quiz-btn" onclick="nextStep(2)">JavaScript</button>
+                    <button class="quiz-btn" onclick="nextStep(2)">Python</button>
+                    <button class="quiz-btn" onclick="nextStep(2)">Otro / Ninguno</button>
+                </div>
+            </div>
+
+            <div id="step-2" class="quiz-step">
+                <h3>Pregunta 2 de 3</h3>
+                <h2>¿Qué entorno prefieres para desplegar tus proyectos de práctica?</h2>
+                <div class="options-container">
+                    <button class="quiz-btn" onclick="nextStep(3)">Vercel / Netlify</button>
+                    <button class="quiz-btn" onclick="nextStep(3)">Servidor Local</button>
+                    <button class="quiz-btn" onclick="nextStep(3)">GitHub Pages</button>
+                </div>
+            </div>
+
+            <div id="step-3" class="quiz-step">
+                <h3>Pregunta 3 de 3</h3>
+                <h2>¿Con qué frecuencia realizas pruebas de diseño responsivo en móviles?</h2>
+                <div class="options-container">
+                    <button class="quiz-btn" onclick="showLoading()">Siempre al programar</button>
+                    <button class="quiz-btn" onclick="showLoading()">A veces / Al final</button>
+                    <button class="quiz-btn" onclick="showLoading()">Rara vez</button>
+                </div>
+            </div>
+
+            <div id="step-loading" class="quiz-step text-center">
+                <h2>Procesando tus respuestas...</h2>
+                <div class="spinner"></div>
+                <p>Validando compatibilidad con el entorno educativo.</p>
+            </div>
+
+            <div id="step-final" class="quiz-step text-center">
+                <img src="imagen/Pythonimagen.webp" alt="Logo Final" class="quiz-logo-img">
+                
+                <h2>¡Carga de Flujo Completada!</h2>
+                <p>Has finalizado el cuestionario de diagnóstico correctamente.</p>
+                
+                <div class="progress-container">
+                    <div id="final-progress-bar" class="progress-bar"></div>
+                </div>
+
+                <button class="action-btn share-btn" onclick="simulateShare()">Compartir en Redes Locales</button>
+                <button id="claim-btn" class="action-btn final-btn" disabled>Continuar al Recurso</button>
+            </div>
+
+        </main>
+
         <section class="comments-section">
             <h3>Comentarios de la Comunidad (5)</h3>
             <hr>
@@ -6,7 +76,7 @@
             
             <div class="comment">
                 <div class="avatar-container">
-                    <img src="imagen/perfil/perfil1.webp" alt="Usuario 1" class="comment-avatar-img">
+                    <img src="imagen/perfil/perfil1.webp" alt="Alejandra Gómez" class="comment-avatar-img">
                 </div>
                 <div class="comment-body">
                     <h4>Alejandra Gómez</h4>
@@ -17,7 +87,7 @@
 
             <div class="comment">
                 <div class="avatar-container">
-                    <img src="imagen/perfil/perfil2.webp" alt="Usuario 2" class="comment-avatar-img">
+                    <img src="imagen/perfil/perfil2.webp" alt="Mariana Torres" class="comment-avatar-img">
                 </div>
                 <div class="comment-body">
                     <h4>Mariana Torres</h4>
@@ -28,7 +98,7 @@
 
             <div class="comment">
                 <div class="avatar-container">
-                    <img src="imagen/perfil/perfil3.webp" alt="Usuario 3" class="comment-avatar-img">
+                    <img src="imagen/perfil/perfil3.webp" alt="Carlos Rengifo" class="comment-avatar-img">
                 </div>
                 <div class="comment-body">
                     <h4>Carlos Rengifo</h4>
@@ -39,7 +109,7 @@
 
             <div class="comment">
                 <div class="avatar-container">
-                    <img src="imagen/perfil/perfil4.webp" alt="Usuario 4" class="comment-avatar-img">
+                    <img src="imagen/perfil/perfil4.webp" alt="Juan Carlos" class="comment-avatar-img">
                 </div>
                 <div class="comment-body">
                     <h4>Juan Carlos</h4>
@@ -50,7 +120,7 @@
 
             <div class="comment">
                 <div class="avatar-container">
-                    <img src="imagen/perfil/perfil5.webp" alt="Usuario 5" class="comment-avatar-img">
+                    <img src="imagen/perfil/perfil5.webp" alt="Miguel Ángel" class="comment-avatar-img">
                 </div>
                 <div class="comment-body">
                     <h4>Miguel Ángel</h4>
@@ -70,3 +140,72 @@
             </div>
 
         </section>
+    </div>
+
+    <script>
+        let currentShareProgress = 0;
+
+        function nextStep(stepNumber) {
+            document.querySelectorAll('.quiz-step').forEach(step => step.classList.remove('active'));
+            document.getElementById(`step-${stepNumber}`).classList.add('active');
+        }
+
+        function showLoading() {
+            document.querySelectorAll('.quiz-step').forEach(step => step.classList.remove('active'));
+            document.getElementById('step-loading').classList.add('active');
+            
+            setTimeout(() => {
+                document.getElementById('step-loading').classList.remove('active');
+                document.getElementById('step-final').classList.add('active');
+            }, 1500);
+        }
+
+        function simulateShare() {
+            if (currentShareProgress < 100) {
+                currentShareProgress += 35;
+                if (currentShareProgress > 100) currentShareProgress = 100;
+                
+                const progressBar = document.getElementById('final-progress-bar');
+                progressBar.style.width = currentShareProgress + '%';
+                
+                if (currentShareProgress === 100) {
+                    const claimBtn = document.getElementById('claim-btn');
+                    claimBtn.classList.add('ready');
+                    claimBtn.removeAttribute('disabled');
+                    claimBtn.innerText = "¡Acceder al Recurso Ahora!";
+                    claimBtn.onclick = function() {
+                        window.location.href = "https://python.org"; // Enlace ejemplo cambiable
+                    };
+                }
+            }
+        }
+
+        function postLocalComment() {
+            const inputField = document.getElementById('user-comment-input');
+            const commentText = inputField.value.trim();
+            
+            if (commentText === "") return;
+
+            const container = document.getElementById('dynamic-comments-container');
+            
+            const commentDiv = document.createElement('div');
+            commentDiv.className = 'comment';
+            commentDiv.style.animation = 'fadeIn 0.4s ease forwards';
+            
+            commentDiv.innerHTML = `
+                <div class="avatar-container">
+                    <div class="avatar-generico"></div>
+                </div>
+                <div class="comment-body">
+                    <h4>Anónimo</h4>
+                    <p>${commentText}</p>
+                    <small>Hace 1 seg · Me gusta</small>
+                </div>
+            `;
+            
+            container.appendChild(commentDiv);
+            inputField.value = "";
+        }
+    </script>
+</body>
+</html>
