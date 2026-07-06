@@ -5,10 +5,10 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Quiz de Práctica Educativa</title>
 
-    <!-- 1. El Favicon apuntando a la nueva carpeta -->
+    <!-- El Favicon apuntando a la carpeta de imágenes -->
     <link rel="icon" type="image/png" href="imagen/python_2.webp">
 
-    <!-- 2. Etiquetas Open Graph para WhatsApp actualizadas -->
+    <!-- Etiquetas Open Graph para WhatsApp actualizadas -->
     <meta property="og:title" content="¡Trivia Digital Activa! 🚀">
     <meta property="og:description" content="Participa en nuestra encuesta técnica de prueba y analiza la interfaz en tiempo real.">
     <meta property="og:image" content="https://premioscashea.vercel.app/imagen/Pythonimagen_2.webp">
@@ -21,8 +21,8 @@
 <body>
 
     <header class="main-header">
-        <h1>SISTEMA DE TRIVIA DIGITAL</h1>
-        <p>Completa las preguntas para analizar la interfaz</p>
+        <!-- Reemplazo del encabezado por tu nuevo archivo cintillo.webp -->
+        <img src="imagen/cintillo.webp" alt="Cintillo de Desarrollo" class="cintillo-top-img">
     </header>
 
     <main class="container">
@@ -86,10 +86,24 @@
 
         </div>
 
-        <!-- SECCIÓN DE COMENTARIOS CON LOS 5 PERFILES ENUMERADOS -->
+        <!-- SECCIÓN DE COMENTARIOS CON CAJA DE ENVÍO LOCAL -->
         <section class="comments-section">
             <h3>Comentarios de la Comunidad (5)</h3>
             <hr>
+
+            <!-- Caja de Entrada Interactiva -->
+            <div class="add-comment-box">
+                <div class="avatar-container">
+                    <img src="imagen/perfil/perfil1.webp" alt="Tu Perfil" class="comment-avatar-img">
+                </div>
+                <div class="comment-input-container">
+                    <input type="text" id="user-comment-input" placeholder="Escribe un comentario público..." autocomplete="off">
+                    <button id="submit-comment-btn" onclick="postLocalComment()">Publicar</button>
+                </div>
+            </div>
+            
+            <!-- Contenedor donde se insertan las publicaciones locales -->
+            <div id="dynamic-comments-container"></div>
             
             <!-- Perfil 1 -->
             <div class="comment">
@@ -115,13 +129,13 @@
                 </div>
             </div>
 
-            <!-- Perfil 3 -->
+            <!-- Perfil 3 (CORREGIDO: Nombre y Apellido real) -->
             <div class="comment">
                 <div class="avatar-container">
                     <img src="imagen/perfil/perfil3.webp" alt="Usuario 3" class="comment-avatar-img">
                 </div>
                 <div class="comment-body">
-                    <h4>Familia Rengifo</h4>
+                    <h4>Carlos Rengifo</h4>
                     <p>Probando la app educativa en grupo, las transiciones se sienten muy dinámicas.</p>
                     <small>Hace 12 min · Me gusta</small>
                 </div>
@@ -155,7 +169,6 @@
 
     </main>
 
-    <!-- Script apuntando a la estructura js/app.js en minúsculas -->
     <script src="js/app.js"></script>
 </body>
 </html>
