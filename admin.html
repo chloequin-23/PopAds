@@ -1,1 +1,161 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+  <meta name="robots" content="noindex, nofollow" />
+  <title>Panel de Control · Autogestionable</title>
 
+  <!-- Usamos Tailwind CSS para darle un look premium y mobile-first idéntico a tu idea -->
+  <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
+  <!-- CDN de Supabase -->
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+
+  <style>
+    /* Estilos base inspirados en tu archivo para el comportamiento SPA */
+    .admin-panel { display: none; }
+    .admin-panel.activo { display: block; }
+    .glass {
+      background: rgba(17, 24, 39, 0.7);
+      backdrop-filter: blur(12px);
+      -webkit-backdrop-filter: blur(12px);
+      border: 1px solid rgba(255, 255, 255, 0.08);
+    }
+  </style>
+</head>
+<body class="bg-gray-950 text-gray-100 min-h-screen pb-24 font-sans selection:bg-pink-500 selection:text-white">
+
+  <!-- PANTALLA: ACCESO DENEGADO / FORMULARIO LOGIN -->
+  <div id="admin-denegado" class="fixed inset-0 bg-gray-950 flex items-center justify-center z-50 px-4">
+    <div class="glass p-6 rounded-2xl w-full max-w-sm shadow-2xl text-center space-y-4">
+      <h1 class="text-3xl font-extrabold tracking-tight text-pink-500">Acceso Privado</h1>
+      <p class="text-sm text-gray-400">Introduce tus credenciales de Supabase para gestionar el sistema.</p>
+      
+      <form id="login-form" class="space-y-3 text-left">
+        <div>
+          <label class="block text-xs font-semibold uppercase tracking-wider text-gray-400 mb-1">Email</label>
+          <input type="email" id="login-email" required class="w-full bg-gray-900/80 border border-gray-700 rounded-xl p-3 text-white text-sm focus:outline-none focus:border-pink-500 transition" placeholder="tu@correo.com">
+        </div>
+        <div>
+          <label class="block text-xs font-semibold uppercase tracking-wider text-gray-400 mb-1">Contraseña</label>
+          <input type="password" id="login-password" required class="w-full bg-gray-900/80 border border-gray-700 rounded-xl p-3 text-white text-sm focus:outline-none focus:border-pink-500 transition" placeholder="••••••••">
+        </div>
+        <button type="submit" class="w-full bg-gradient-to-r from-pink-600 to-purple-600 hover:from-pink-700 hover:to-purple-700 font-bold p-3 rounded-xl transition text-sm shadow-lg shadow-pink-900/20">Ingresar al Panel</button>
+      </form>
+    </div>
+  </div>
+
+  <!-- PANEL PRINCIPAL (Se muestra mediante auth.js al validar sesión) -->
+  <div id="admin-panel-contenedor" class="hidden">
+
+    <header class="glass sticky top-0 z-40 px-4 py-4 flex justify-between items-center shadow-lg">
+      <h1 class="text-xl font-black tracking-wider uppercase text-white">Panel <span class="text-transparent bg-clip-text bg-gradient-to-r from-pink-500 to-purple-400">Admin</span></h1>
+      <button id="btn-logout-admin" class="text-xs font-bold bg-gray-800/80 hover:bg-red-950/40 border border-gray-700/60 px-3 py-2 rounded-xl transition">Salir</button>
+    </header>
+
+    <!-- TABS SUPERIORES / RESPONSIVOS PARA MÓVIL -->
+    <nav class="flex gap-1 overflow-x-auto px-4 py-3 bg-gray-900/40 border-b border-gray-800/60 scrollbar-none">
+      <button class="admin-tab whitespace-nowrap text-xs font-bold px-4 py-2 rounded-xl border border-pink-500/30 bg-pink-500/10 text-pink-400 transition" data-tab="colores">🎨 Colores</button>
+      <button class="admin-tab whitespace-nowrap text-xs font-bold px-4 py-2 rounded-xl border border-transparent text-gray-400 hover:text-white transition" data-tab="medios">🖼️ Medios</button>
+      <button class="admin-tab whitespace-nowrap text-xs font-bold px-4 py-2 rounded-xl border border-transparent text-gray-400 hover:text-white transition" data-tab="quiz">❓ Quiz</button>
+      <button class="admin-tab whitespace-nowrap text-xs font-bold px-4 py-2 rounded-xl border border-transparent text-gray-400 hover:text-white transition" data-tab="comentarios">💬 Comentarios</button>
+      <button class="admin-tab whitespace-nowrap text-xs font-bold px-4 py-2 rounded-xl border border-transparent text-gray-400 hover:text-white transition" data-tab="sistema">⚙️ Links</button>
+    </nav>
+
+    <main class="max-w-md mx-auto p-4 space-y-6">
+
+      <!-- PANEL 1: COLORES -->
+      <section id="panel-colores" class="admin-panel glass p-5 rounded-2xl shadow-xl active">
+        <h2 class="text-base font-bold text-pink-400 uppercase tracking-wide mb-1">Colores del Tema</h2>
+        <p class="text-xs text-gray-400 mb-4">Modifica la paleta cromática de la vista pública en tiempo real.</p>
+
+        <form id="form-colores" class="space-y-4">
+          <div class="flex items-center justify-between bg-gray-900/60 p-3 rounded-xl border border-gray-800">
+            <label for="input-fondo-pagina" class="text-xs font-medium text-gray-300">Fondo de la Página (Body)</label>
+            <input type="color" id="input-fondo-pagina" class="w-12 h-8 bg-transparent rounded cursor-pointer" />
+          </div>
+          <div class="flex items-center justify-between bg-gray-900/60 p-3 rounded-xl border border-gray-800">
+            <label for="input-color-primario" class="text-xs font-medium text-gray-300">Color de Botones y Acentos</label>
+            <input type="color" id="input-color-primario" class="w-12 h-8 bg-transparent rounded cursor-pointer" />
+          </div>
+          <button type="submit" class="w-full bg-pink-600 hover:bg-pink-700 text-white text-xs font-bold py-3 rounded-xl transition">Guardar Colores</button>
+        </form>
+      </section>
+
+      <!-- PANEL 2: MEDIOS -->
+      <section id="panel-medios" class="admin-panel glass p-5 rounded-2xl shadow-xl">
+        <h2 class="text-base font-bold text-purple-400 uppercase tracking-wide mb-1">Imágenes y Recursos</h2>
+        <p class="text-xs text-gray-400 mb-4">Intercambia los componentes visuales de la web.</p>
+
+        <form id="form-medios" class="space-y-4">
+          <div class="bg-gray-900/60 p-4 rounded-xl border border-gray-800 space-y-2">
+            <label class="block text-xs font-medium text-gray-300">Cintillo Superior (.webp)</label>
+            <input type="file" id="file-cintillo" accept="image/webp" class="block w-full text-xs text-gray-400 file:mr-3 file:py-1.5 file:px-3 file:rounded-lg file:border-0 file:text-xs file:font-bold file:bg-purple-600 file:text-white hover:file:bg-purple-700 cursor-pointer" />
+          </div>
+          <button type="submit" class="w-full bg-purple-600 hover:bg-purple-700 text-white text-xs font-bold py-3 rounded-xl transition">Actualizar Recursos</button>
+        </form>
+      </section>
+
+      <!-- PANEL 3: QUIZ -->
+      <section id="panel-quiz" class="admin-panel glass p-5 rounded-2xl shadow-xl">
+        <h2 class="text-base font-bold text-blue-400 uppercase tracking-wide mb-1">Textos de las Preguntas</h2>
+        <p class="text-xs text-gray-400 mb-4">Cambia dinámicamente los encabezados de la trivia.</p>
+
+        <form id="form-quiz" class="space-y-4">
+          <div class="space-y-1">
+            <label for="input-pregunta-1" class="text-xs text-gray-400">Pregunta 1 de 3</label>
+            <input type="text" id="input-pregunta-1" required class="w-full bg-gray-900 border border-gray-800 rounded-xl p-3 text-xs text-white focus:outline-none focus:border-blue-500" />
+          </div>
+          <div class="space-y-1">
+            <label for="input-pregunta-2" class="text-xs text-gray-400">Pregunta 2 de 3</label>
+            <input type="text" id="input-pregunta-2" required class="w-full bg-gray-900 border border-gray-800 rounded-xl p-3 text-xs text-white focus:outline-none focus:border-blue-500" />
+          </div>
+          <div class="space-y-1">
+            <label for="input-pregunta-3" class="text-xs text-gray-400">Pregunta 3 de 3</label>
+            <input type="text" id="input-pregunta-3" required class="w-full bg-gray-900 border border-gray-800 rounded-xl p-3 text-xs text-white focus:outline-none focus:border-blue-500" />
+          </div>
+          <button type="submit" class="w-full bg-blue-600 hover:bg-blue-700 text-white text-xs font-bold py-3 rounded-xl transition">Guardar Cambios del Quiz</button>
+        </form>
+      </section>
+
+      <!-- PANEL 4: COMENTARIOS -->
+      <section id="panel-comentarios" class="admin-panel glass p-5 rounded-2xl shadow-xl">
+        <h2 class="text-base font-bold text-green-400 uppercase tracking-wide mb-1">Sección de Testimonios</h2>
+        <p class="text-xs text-gray-400 mb-4">Personaliza los comentarios base y sus colores de fuente particulares.</p>
+
+        <form id="form-comentarios" class="space-y-4 max-h-[55vh] overflow-y-auto pr-1 space-y-6">
+          <div id="contenedor-comentarios-inputs">
+             <!-- Se renderizarán automáticamente los inputs para los 5 comentarios aquí desde JS -->
+          </div>
+          <button type="submit" class="w-full bg-green-600 hover:bg-green-700 text-white text-xs font-bold py-3 rounded-xl transition">Actualizar Comentarios</button>
+        </form>
+      </section>
+
+      <!-- PANEL 5: SISTEMA -->
+      <section id="panel-sistema" class="admin-panel glass p-5 rounded-2xl shadow-xl">
+        <h2 class="text-base font-bold text-yellow-500 uppercase tracking-wide mb-1">Redirección y Destino</h2>
+        <p class="text-xs text-gray-400 mb-4">Configura las acciones y el enlace final de monetización u oferta.</p>
+
+        <form id="form-sistema" class="space-y-4">
+          <div class="space-y-1">
+            <label for="input-texto-boton" class="text-xs text-gray-400">Texto del Botón Final</label>
+            <input type="text" id="input-texto-boton" required class="w-full bg-gray-900 border border-gray-800 rounded-xl p-3 text-xs text-white focus:outline-none focus:border-yellow-500" />
+          </div>
+          <div class="space-y-1">
+            <label for="input-url-redireccion" class="text-xs text-gray-400">URL Destino Final</label>
+            <input type="url" id="input-url-redireccion" required class="w-full bg-gray-900 border border-gray-800 rounded-xl p-3 text-xs text-white focus:outline-none focus:border-yellow-500" />
+          </div>
+          <button type="submit" class="w-full bg-yellow-600 hover:bg-yellow-700 text-gray-950 text-xs font-bold py-3 rounded-xl transition">Guardar Enlace del Sistema</button>
+        </form>
+      </section>
+
+    </main>
+  </div>
+
+  <!-- VINCULACIÓN DE TUS SCRIPTS EN ORDEN CORRECTO -->
+  <script src="js/supabaseClient.js"></script>
+  <script src="js/auth.js"></script>
+  <script src="js/adminTabs.js"></script>
+  <script src="js/adminActions.js"></script>
+</body>
+</html>
