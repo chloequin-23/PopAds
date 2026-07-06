@@ -2,199 +2,87 @@
 <html lang="es">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>Panel de Control Total · Cashea</title>
-    <!-- CDN de Tailwind para el diseño -->
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Admin V2 - Debug Mode</title>
     <script src="https://cdn.tailwindcss.com"></script>
-    <!-- CDN de Supabase -->
     <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
-    <style>
-        .admin-panel { display: none; }
-        .admin-panel.active { display: block; }
-        .tab-btn.active { border-bottom: 2px solid #ec4899; color: #ec4899; }
-    </style>
 </head>
-<body class="bg-black text-gray-200 font-sans min-h-screen pb-12">
+<body class="bg-black text-white font-sans p-4">
 
-    <!-- LOGIN -->
-    <div id="admin-denegado" class="fixed inset-0 bg-black flex items-center justify-center z-50 p-6">
-        <div class="bg-gray-900 p-8 rounded-2xl w-full max-w-sm border border-gray-800 shadow-2xl">
-            <h1 class="text-xl font-bold text-pink-500 mb-6 text-center">Acceso Privado</h1>
-            <form id="login-form" class="space-y-4">
-                <input type="email" id="login-email" required placeholder="Correo" class="w-full bg-black border border-gray-700 rounded-lg p-3 text-sm focus:border-pink-500 outline-none">
-                <input type="password" id="login-password" required placeholder="Contraseña" class="w-full bg-black border border-gray-700 rounded-lg p-3 text-sm focus:border-pink-500 outline-none">
-                <button type="submit" class="w-full bg-pink-600 hover:bg-pink-700 py-3 rounded-lg font-bold text-sm transition">Ingresar</button>
-            </form>
+    <!-- CONSOLA DE DEBUG (Para que veas qué falla) -->
+    <div id="debug-log" class="fixed top-2 right-2 bg-red-900/80 p-2 rounded text-[10px] z-50 opacity-0"></div>
+
+    <!-- BLOQUE 1: LOGIN -->
+    <section id="auth-section" class="flex flex-col items-center justify-center min-h-[80vh]">
+        <h2 class="text-xl font-bold mb-4">Acceso Admin</h2>
+        <input id="email" type="email" placeholder="Email" class="w-full max-w-xs bg-gray-800 p-3 mb-2 rounded">
+        <input id="pass" type="password" placeholder="Pass" class="w-full max-w-xs bg-gray-800 p-3 mb-4 rounded">
+        <button id="login-btn" class="bg-pink-600 px-8 py-3 rounded-full font-bold">Entrar</button>
+    </section>
+
+    <!-- BLOQUE 2: PANEL (Inicialmente oculto) -->
+    <section id="panel-section" class="hidden">
+        <div class="flex justify-between items-center mb-6">
+            <h1 class="text-2xl font-bold">Admin Panel</h1>
+            <button id="logout-btn" class="bg-gray-700 px-3 py-1 rounded text-xs">Salir</button>
         </div>
-    </div>
 
-    <!-- PANEL PRINCIPAL -->
-    <div id="admin-panel-contenedor" class="hidden">
-        <header class="bg-gray-900 p-4 flex justify-between items-center border-b border-gray-800 sticky top-0 z-40">
-            <h1 class="font-bold">Panel <span class="text-pink-500">Admin</span></h1>
-            <button id="btn-logout-admin" class="text-xs bg-gray-800 px-3 py-1 rounded-full">Salir</button>
-        </header>
-
-        <!-- PESTAÑAS DE NAVEGACIÓN -->
-        <nav class="flex overflow-x-auto p-3 gap-4 border-b border-gray-800 bg-gray-900/50 sticky top-[61px] z-30 scrollbar-none">
-            <button class="tab-btn active text-xs font-bold whitespace-nowrap px-1 py-2" data-tab="colores">🎨 Colores</button>
-            <button class="tab-btn text-xs font-bold whitespace-nowrap px-1 py-2" data-tab="medios">🖼️ Medios</button>
-            <button class="tab-btn text-xs font-bold whitespace-nowrap px-1 py-2" data-tab="quiz">❓ Quiz</button>
-            <button class="tab-btn text-xs font-bold whitespace-nowrap px-1 py-2" data-tab="comentarios">💬 Comentarios</button>
-            <button class="tab-btn text-xs font-bold whitespace-nowrap px-1 py-2" data-tab="sistema">⚙️ Sistema</button>
-        </nav>
-
-        <main class="p-4 max-w-md mx-auto space-y-6">
-            
-            <!-- MÓDULO COLORES -->
-            <section id="colores" class="admin-panel active space-y-4">
-                <h2 class="text-sm font-bold text-pink-400 uppercase tracking-wide">Personalización de Colores</h2>
-                <div class="bg-gray-900 p-4 rounded-xl border border-gray-800 space-y-4">
-                    <div>
-                        <label class="block text-xs text-gray-400 mb-1">Color de Fondo (Body)</label>
-                        <input type="color" id="input-fondo-pagina" class="w-full h-10 bg-transparent cursor-pointer rounded-lg border border-gray-700">
-                    </div>
-                    <div>
-                        <label class="block text-xs text-gray-400 mb-1">Color de Botones y Acentos</label>
-                        <input type="color" id="input-color-primario" class="w-full h-10 bg-transparent cursor-pointer rounded-lg border border-gray-700">
-                    </div>
-                    <button id="btn-save-colores" class="w-full bg-pink-600 hover:bg-pink-700 py-2.5 rounded-lg text-sm font-bold transition">Guardar Colores</button>
-                </div>
-            </section>
-            
-            <!-- MÓDULO MEDIOS -->
-            <section id="medios" class="admin-panel space-y-4">
-                <h2 class="text-sm font-bold text-purple-400 uppercase tracking-wide">Imágenes y Logos</h2>
-                <div class="bg-gray-900 p-4 rounded-xl border border-gray-800 space-y-4">
-                    <div>
-                        <label class="block text-xs text-gray-400 mb-1">Cintillo Superior</label>
-                        <input type="file" id="file-cintillo" accept="image/*" class="w-full text-xs bg-black p-2 rounded-lg border border-gray-800">
-                    </div>
-                    <div>
-                        <label class="block text-xs text-gray-400 mb-1">Logo Principal de la Web</label>
-                        <input type="file" id="file-logo-principal" accept="image/*" class="w-full text-xs bg-black p-2 rounded-lg border border-gray-800">
-                    </div>
-                    <div>
-                        <label class="block text-xs text-gray-400 mb-1">Favicon (Icono de la URL/Pestaña)</label>
-                        <input type="file" id="file-favicon" accept="image/*" class="w-full text-xs bg-black p-2 rounded-lg border border-gray-800">
-                    </div>
-                    <div>
-                        <label class="block text-xs text-gray-400 mb-1">Imagen de Vista Previa (WhatsApp/Compartir)</label>
-                        <input type="file" id="file-share-wp" accept="image/*" class="w-full text-xs bg-black p-2 rounded-lg border border-gray-800">
-                    </div>
-                    <button id="btn-save-medios" class="w-full bg-purple-600 hover:bg-purple-700 py-2.5 rounded-lg text-sm font-bold transition">Subir Archivos</button>
-                </div>
-            </section>
-
-            <!-- MÓDULO QUIZ -->
-            <section id="quiz" class="admin-panel space-y-4">
-                <h2 class="text-sm font-bold text-blue-400 uppercase tracking-wide">Textos y Preguntas del Quiz</h2>
-                <div class="bg-gray-900 p-4 rounded-xl border border-gray-800 space-y-4">
-                    <div>
-                        <label class="block text-xs text-gray-400 mb-1">Enunciado Pregunta 1</label>
-                        <input type="text" id="input-pregunta-1" class="w-full bg-black p-3 rounded-lg border border-gray-800 text-xs text-white focus:border-blue-500 outline-none" placeholder="Pregunta 1">
-                    </div>
-                    <div>
-                        <label class="block text-xs text-gray-400 mb-1">Enunciado Pregunta 2</label>
-                        <input type="text" id="input-pregunta-2" class="w-full bg-black p-3 rounded-lg border border-gray-800 text-xs text-white focus:border-blue-500 outline-none" placeholder="Pregunta 2">
-                    </div>
-                    <div>
-                        <label class="block text-xs text-gray-400 mb-1">Enunciado Pregunta 3</label>
-                        <input type="text" id="input-pregunta-3" class="w-full bg-black p-3 rounded-lg border border-gray-800 text-xs text-white focus:border-blue-500 outline-none" placeholder="Pregunta 3">
-                    </div>
-                    <button id="btn-save-quiz" class="w-full bg-blue-600 hover:bg-blue-700 py-2.5 rounded-lg text-sm font-bold transition">Actualizar Trivia</button>
-                </div>
-            </section>
-
-            <!-- MÓDULO COMENTARIOS -->
-            <section id="comentarios" class="admin-panel space-y-4">
-                <h2 class="text-sm font-bold text-green-400 uppercase tracking-wide">Sección de Testimonios (5 Bloques)</h2>
-                <div id="contenedor-comentarios" class="space-y-6 max-h-[60vh] overflow-y-auto pr-1">
-                    <!-- Los 5 bloques estructurados con inputs individuales -->
-                    <script>
-                        const contenedor = document.getElementById('contenedor-comentarios');
-                        for (let i = 1; i <= 5; i++) {
-                            contenedor.innerHTML += `
-                                <div class="bg-gray-900 p-4 rounded-xl border border-gray-800 space-y-3">
-                                    <h3 class="text-xs font-bold text-green-500 uppercase">👤 Testimonio #${i}</h3>
-                                    <div>
-                                        <label class="block text-[10px] text-gray-400 mb-0.5">Nombre del Usuario</label>
-                                        <input type="text" id="comentario-nombre-${i}" class="w-full bg-black p-2 rounded-lg border border-gray-800 text-xs outline-none focus:border-green-500">
-                                    </div>
-                                    <div>
-                                        <label class="block text-[10px] text-gray-400 mb-0.5">Texto del Comentario</label>
-                                        <textarea id="comentario-texto-${i}" rows="2" class="w-full bg-black p-2 rounded-lg border border-gray-800 text-xs outline-none focus:border-green-500 resize-none"></textarea>
-                                    </div>
-                                    <div>
-                                        <label class="block text-[10px] text-gray-400 mb-0.5">Foto de Avatar (File)</label>
-                                        <input type="file" id="comentario-avatar-${i}" accept="image/*" class="w-full text-[11px] bg-black p-1.5 rounded-lg border border-gray-800">
-                                    </div>
-                                </div>
-                            `;
-                        }
-                    </script>
-                </div>
-                <button id="btn-save-comentarios" class="w-full bg-green-600 hover:bg-green-700 py-2.5 rounded-lg text-sm font-bold transition mt-2">Guardar Todos los Comentarios</button>
-            </section>
-
-            <!-- MÓDULO SISTEMA -->
-            <section id="sistema" class="admin-panel space-y-4">
-                <h2 class="text-sm font-bold text-yellow-400 uppercase tracking-wide">Redirección del Botón Final</h2>
-                <div class="bg-gray-900 p-4 rounded-xl border border-gray-800 space-y-4">
-                    <div>
-                        <label class="block text-xs text-gray-400 mb-1">Texto de la Acción</label>
-                        <input type="text" id="input-texto-boton" class="w-full bg-black p-3 rounded-lg border border-gray-800 text-xs text-white focus:border-yellow-500 outline-none" placeholder="Ej: Reclamar Premio">
-                    </div>
-                    <div>
-                        <label class="block text-xs text-gray-400 mb-1">URL de Destino Final</label>
-                        <input type="url" id="input-url-redireccion" class="w-full bg-black p-3 rounded-lg border border-gray-800 text-xs text-white focus:border-yellow-500 outline-none" placeholder="https://...">
-                    </div>
-                    <button id="btn-save-sistema" class="w-full bg-yellow-600 hover:bg-yellow-700 text-gray-950 py-2.5 rounded-lg text-sm font-bold transition">Guardar Configuración</button>
-                </div>
-            </section>
-        </main>
-    </div>
+        <!-- Módulos reales -->
+        <div class="space-y-4">
+            <div id="mod-colores" class="p-4 bg-gray-900 rounded-xl border border-gray-700">
+                <h3 class="text-pink-500 font-bold mb-2">🎨 Módulo Colores</h3>
+                <input type="color" class="w-full h-10 mb-2">
+                <button class="w-full bg-pink-700 py-2 rounded">Guardar Color</button>
+            </div>
+            <!-- Aquí puedes añadir más módulos -->
+        </div>
+    </section>
 
     <script>
-        // Inicialización de Supabase
+        const log = (msg) => {
+            const d = document.getElementById('debug-log');
+            d.innerHTML += msg + '<br>';
+            d.style.opacity = '1';
+            console.log(msg);
+        };
+
         const supabase = supabase.createClient(
             "https://qmyndbtdrwsrdkjmlgxh.supabase.co",
             "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InFteW5kYnRkcndzcmRram1sZ3hoIiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODMzNTM1ODUsImV4cCI6MjA5ODkyOTU4NX0.b_TIFgIyBInmAREViPjYIddKXGxdiI6EJSfAa7tSxFo"
         );
 
-        // Lógica de cambio de Pestañas (Tabs) sin fallas
-        document.querySelectorAll('.tab-btn').forEach(btn => {
-            btn.addEventListener('click', () => {
-                document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
-                document.querySelectorAll('.admin-panel').forEach(p => p.classList.remove('active'));
-                btn.classList.add('active');
-                document.getElementById(btn.dataset.tab).classList.add('active');
-            });
-        });
+        // Modular: Función de inicio
+        async function checkSession() {
+            try {
+                log("Verificando sesión...");
+                const { data } = await supabase.auth.getSession();
+                if (data.session) {
+                    document.getElementById('auth-section').classList.add('hidden');
+                    document.getElementById('panel-section').classList.remove('hidden');
+                    log("Sesión activa");
+                } else {
+                    log("Sin sesión. Esperando login.");
+                }
+            } catch (e) {
+                log("Error auth: " + e.message);
+            }
+        }
 
-        // Manejo del formulario de Login
-        document.getElementById('login-form').addEventListener('submit', async (e) => {
-            e.preventDefault();
-            const email = document.getElementById('login-email').value.trim();
-            const pass = document.getElementById('login-password').value;
+        document.getElementById('login-btn').onclick = async () => {
+            const email = document.getElementById('email').value;
+            const pass = document.getElementById('pass').value;
+            log("Intentando login...");
             const { error } = await supabase.auth.signInWithPassword({ email, password: pass });
-            if (error) alert("Error: " + error.message);
+            if (error) log("Login Error: " + error.message);
             else window.location.reload();
-        });
+        };
 
-        // Salir de sesión
-        document.getElementById('btn-logout-admin').addEventListener('click', async () => {
+        document.getElementById('logout-btn').onclick = async () => {
             await supabase.auth.signOut();
             window.location.reload();
-        });
+        };
 
-        // Validación automática de estado de sesión
-        supabase.auth.getSession().then(({ data }) => {
-            if (data.session) {
-                document.getElementById('admin-denegado').classList.add('hidden');
-                document.getElementById('admin-panel-contenedor').classList.remove('hidden');
-            }
-        });
+        checkSession();
     </script>
 </body>
 </html>
